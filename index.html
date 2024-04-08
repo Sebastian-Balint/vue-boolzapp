@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Boolzapp</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <script
+      src="https://kit.fontawesome.com/7a5b5a754b.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src=" https://cdn.jsdelivr.net/npm/luxon@3.4.4/build/global/luxon.min.js "></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <div class="bg-main">
+        <section class="main-section row">
+          <!-- sezione chat laterale -->
+          <div class="sidebar d-none">
+            <ul class="container column">
+              <li class="sidebar-user-profile">
+                <div class="bg row">
+                  <img class="avatar" src="img/avatar_1.jpg" alt="" />
+                  <div class="d-none">
+                    <a href="#"><i class="fa-solid fa-rotate-right"></i></a>
+                    <a href="#"><i class="fa-solid fa-message"></i></a>
+                    <a href="#"
+                      ><i class="fa-solid fa-ellipsis-vertical"></i
+                    ></a>
+                  </div>
+                </div>
+              </li>
+
+              <!-- USER PROFILE -->
+              <li class="attiva-notifiche d-none">
+                <div class="bg row">
+                  <div><i class="fa-solid fa-bell-slash"></i></div>
+                  <div class="column">
+                    <span>Ricevi notifiche di nuovi messaggi</span>
+                    <span>Attiva notifiche desktop</span>
+                  </div>
+                </div>
+              </li>
+
+              <li class="search-contacts d-none">
+                <div class="bg">
+                  <input
+                    v-model="searchValue"
+                    type="text"
+                    name=""
+                    id=""
+                    placeholder="Cerca o inizia una nuova chat"
+                  />
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+              </li>
+
+              <!-- LISTA CHAT RECENTI -->
+              <li class="open-chats">
+                <div class="bg">
+                  <ul class="lista-contatti">
+                    <li
+                      @click="currentContact(i)"
+                      v-for="(contatto, i) in contacts"
+                      :class="[contatto.name.includes(searchValue) ? '' : 'hidden' ,'contact' ,'row']"
+                    >
+                      <div class="row">
+                        <img class="avatar" :src="contatto.avatar" alt="" />
+                        <div class="d-none d-lg-block col-auto">
+                          <h3 class="contact-name">{{contatto.name}}</h3>
+                          <p class="chat-preview">
+                            {{contatto.messages[contatto.messages.length-1].message}}
+                          </p>
+                        </div>
+                      </div>
+                      <span class="d-none d-lg-block date"
+                        >{{trimmedDate(i)}}</span
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <!-- sezione chat aperta -->
+          <div class="chat-section">
+            <!-- CHAT TOPBAR  -->
+            <div class="chat-topbar">
+              <div class="bg row">
+                <div class="contact-bar row">
+                  <img class="avatar" :src="contacts[i].avatar" alt="" />
+                  <h3 class="contact-name">{{contacts[i].name}}</h3>
+                </div>
+
+                <div class="d-none">
+                  <a href="#"><i class="fa-solid fa-rotate-right"></i></a>
+                  <a href="#"><i class="fa-solid fa-message"></i></a>
+                  <a href="#"><i class="fa-solid fa-ellipsis-vertical"></i></a>
+                </div>
+              </div>
+            </div>
+
+            <!-- SEZIONE MESSAGGI  -->
+            <div class="chat-main">
+              <div class="bg">
+                <div
+                  class="column"
+                  v-for="(message, index) in contacts[i].messages"
+                >
+                  <div :class="contacts[i].messages[index].status">
+                    {{ contacts[i].messages[index].message}}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- SEZIONE INPUT  -->
+            <div class="chat-type-input">
+              <a href="#"><i class="fa-solid fa-plus"></i></a>
+              <a href="#"><i class="fa-regular fa-face-smile"></i></a>
+              <input
+                class="input-messaggio"
+                v-model.trim="inputValue"
+                @keyup.enter="pushMessage()"
+                type="text"
+                placeholder="Scrivi messaggio"
+              />
+
+              <a href="#"><i class="fa-solid fa-microphone"></i></a>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <script src="js/script.js"></script>
+  </body>
+</html>
